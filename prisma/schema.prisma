@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Book {
+  id  Int   @id @default(autoincrement()) 
+  name  String  @db.VarChar(200)             
+  author String @db.VarChar(200)             
+  availability Boolean @default(true) 
+  create_at DateTime @default(now())
+  update_at DateTime @updatedAt()
+
+  transactions Transaction[]
+}
+
+model Member {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(200)
+  address String @db.VarChar(200)
+  phono String? @db.VarChar(15) // bigint represent a large integer value 64 bit stored a number
+  email String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  transactions Transaction[]
+}
+
+model Librarian {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(200)
+  phno String? @db.VarChar(15) @unique
+  email String @unique
+  password String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Transaction {
+  id Int @id @default(autoincrement())
+  mem_id Int
+  book_id Int 
+  borrow_date DateTime @default(now())
+  return_date DateTime @default(now())
+  status Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  member Member @relation(fields: [mem_id], references: [id])
+  book Book @relation(fields: [book_id], references: [id])
+}
+
+// model BookMember {
+//   book_id Int
+//   member_id Int
+
+//   @@id([book_id, member_id])
+// }
