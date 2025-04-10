@@ -1,9 +1,12 @@
 import {
   IsEmail,
   IsNotEmpty,
+  isString,
   IsString,
+  Matches,
   MaxLength,
-  minLength,
+  maxLength,
+  MinLength,
 } from 'class-validator';
 
 export class RegisterDto {
@@ -18,7 +21,9 @@ export class RegisterDto {
 
   @IsNotEmpty()
   @IsString()
+  @MinLength(5)
   @MaxLength(15)
+  @Matches(/^\d+$/, { message: 'The mobile number must contain only number' })
   phno: string;
 
   @IsNotEmpty()
