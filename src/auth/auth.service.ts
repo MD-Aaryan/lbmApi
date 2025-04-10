@@ -39,8 +39,8 @@ export class AuthService {
     }
     registerDto.password = await hash(registerDto.password, 10);
     librarian = await this.prisma.librarian.create({ data: registerDto });
-    const tokan = await this.jwtService.signAsync(librarian);
-    return { tokan };
+    const token = await this.jwtService.signAsync(librarian);
+    return { token };
   }
 
   async login(loginDto: LoginDto) {
@@ -65,7 +65,7 @@ export class AuthService {
       throw new UnauthorizedException(`invalid credentails`);
     }
 
-    const tokan = await this.jwtService.signAsync(user);
-    return { tokan };
+    const token = await this.jwtService.signAsync(user);
+    return { token };
   }
 }
