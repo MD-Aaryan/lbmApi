@@ -15,7 +15,7 @@ datasource db {
 
 model Book {
   id  Int   @id @default(autoincrement()) 
-  book_id Int
+  book_id Int @unique
   name  String  @db.VarChar(200)             
   author String @db.VarChar(200)             
   availability Boolean @default(true) 
